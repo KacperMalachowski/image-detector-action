@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":automergeDigest",
+    ":automergeMinor"
+  ],
+  "timezone": "Europe/Warsaw",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "auto",
+  "platformAutomerge": true,
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true,
+      "semanticCommitType": "chore"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "semanticCommitType": "chore"
+    }
+  ]
+}
