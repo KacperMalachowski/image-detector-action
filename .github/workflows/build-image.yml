@@ -36,5 +36,5 @@ jobs:
         if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker push ghcr.io/KacperMalachowski/image-detector:${{ github.sha }}
+        run: docker push ghcr.io/kacpermalachowski/image-detector:${{ github.sha }}
 
