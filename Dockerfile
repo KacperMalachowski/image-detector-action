@@ -12,7 +12,7 @@ WORKDIR /app/image-detector
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-FROM scrath
+FROM scratch
 
 LABEL me.malachowski.source=github.com/KacperMalachowski/image-detector-action
 
