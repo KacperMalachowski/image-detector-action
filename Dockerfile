@@ -1,6 +1,6 @@
 FROM golang:1.24-alpine3.22 AS builder
 
-WORKDIR /app
+WORKDIR /app/image-detector
 
 COPY go.mod go.sum ./
 
@@ -8,7 +8,6 @@ RUN go mod download
 
 COPY . .
 
-WORKDIR /app/image-detector
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
