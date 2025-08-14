@@ -51,7 +51,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^action\.ya?ml$/"
+        "/^action.ya?ml$/"
       ],
       "matchStrings": [
         "image:\\s*docker://(?<depName>[^:]+):(?<currentValue>.+)"
