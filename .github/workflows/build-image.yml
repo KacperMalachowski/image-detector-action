@@ -64,7 +64,7 @@ jobs:
       - uses: aquasecurity/trivy-action@0.32.0
         with:
           image-ref: ghcr.io/kacpermalachowski/image-detector:${{ github.sha }}
-          format: sarif,console
+          format: ${{ github.event_name == 'pull_request' && 'github' || 'sarif' }}
           exit-code: ${{ github.event_name == 'pull_request' && '1' || '0' }}
           severity: CRITICAL,HIGH
           ignore-unfixed: true
