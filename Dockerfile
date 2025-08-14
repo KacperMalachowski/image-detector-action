@@ -1,4 +1,7 @@
-FROM golang:1.24-alpine3.22 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine3.22 AS builder
+
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /app/image-detector
 
@@ -9,7 +12,7 @@ RUN go mod download
 COPY . .
 
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -a -installsuffix cgo -o main .
 
 FROM scratch
 
