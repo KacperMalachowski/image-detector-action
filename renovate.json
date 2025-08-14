@@ -54,7 +54,7 @@
         "/^action.yml$/"
       ],
       "matchStrings": [
-        "image:\\s*docker:\\/\\/(?<depName>(?:[a-z0-9]+(?:[.-][a-z0-9]+)*/)*[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?/[a-z0-9-]+/[a-z0-9-]+):(?<depVersion>[a-z0-9.-]+)"
+        "image:\\s*docker:\\/\\/(?<depName>(?:[a-z0-9]+(?:[.-][a-z0-9]+)*/)*[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?/[a-z0-9-]+/[a-z0-9-]+):(?<currentValue>[a-z0-9.-]+)"
       ],
       "datasourceTemplate": "docker"
     }
