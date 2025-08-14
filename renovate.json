@@ -51,10 +51,10 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^action.yml$/"
+        "/^action\.ya?ml$/"
       ],
       "matchStrings": [
-        "image:\\s*docker:\/\/(?<depName>(?:[a-z0-9]+(?:[.-][a-z0-9]+)*\/)*[a-z0-9]+(?:[.-][a-z0-9]+)*(?::[a-z0-9.-]+)?\/[a-z0-9-]+\/[a-z0-9-]+):(?<currentValue>[a-z0-9.-]+)"
+        "image:\\s*docker://(?<depName>[^:]+):(?<currentValue>.+)"
       ],
       "datasourceTemplate": "docker"
     }
