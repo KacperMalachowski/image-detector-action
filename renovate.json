@@ -42,7 +42,7 @@
         "customType": "regex",
         "fileMatch": ["^action.yml$"],
         "matchStrings": [
-            "image:\\sdocker:\/\/(?<depName>([a-z0-9]+(?:[.-][a-z0-9]+)*\/)*(?:[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?\/(?:[a-z0-9-]+)\/(?:[a-z0-9-]+))(?::)(?<depVersion>[a-z0-9.-]+)"
+            "image:\\sdocker:\/\/(?<depName>([a-z0-9]+(?:[.-][a-z0-9]+)*\/)*(?:[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?\/(?:[a-z0-9-]+)\/(?:[a-z0-9-]+))(?::)(?<currentValue>[a-z0-9.-]+)"
         ],
         "datasourceTemplate": "docker"
     }
