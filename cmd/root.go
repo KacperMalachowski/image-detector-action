@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"io/fs"
 	"log"
@@ -9,6 +11,8 @@ import (
 
 	"github.com/KacperMalachowski/image-detector-action/pkg/strategy"
 	"github.com/bmatcuk/doublestar/v4"
+	set "github.com/deckarep/golang-set/v2"
+	"github.com/sethvargo/go-githubactions"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -84,6 +88,8 @@ func run(cmd *cobra.Command, args []string) error {
 
 	logger.Debugw("Available detectors", "count", len(availableDetectors))
 
+	// root directory to check
+	checkDirectory := viper.GetString("check-directory")
 
 	// Exclude patterns from command line flags
 	excludes := viper.GetStringSlice("exclude")
@@ -92,67 +98,96 @@ func run(cmd *cobra.Command, args []string) error {
 
 	logger.Infow("Scanning directory", "directory", viper.GetString("check-directory"))
 
-	var images []string
+	images, err := findImagesInFiles(
+		checkDirectory,
+		availableDetectors,
+		excludes,
+	)
+	if err != nil {
+		logger.Errorw("Error finding images in files", "error", err)
+		os.Exit(1)
+	}
 
-	filepath.WalkDir(viper.GetString("check-directory"), func(path string, d fs.DirEntry, err error) error {
+	logger.Infow("Image detection completed", "imagesFound", len(images))
+
+	err = setImagesOutput(images)
+	if err != nil {
+		logger.Errorw("Error setting images output", "error", err)
+		os.Exit(1)
+	}
+
+	return nil
+}
+
+func setImagesOutput(images []string) error {
+	output, err := json.Marshal(images)
+	if err != nil {
+		return fmt.Errorf("failed to marshal images: %w", err)
+	}
+
+	githubactions.SetOutput("images", string(output))
+
+	return nil
+}
+
+// findImagesInFiles walks through the specified filesystem tree
+// and use implemented detectors to find images in files.
+// It runs only one detector per file, the first one that supports the file type.
+// Uses generic detector for all files that are not supported by any other detector.
+// It returns a slice of detected image URLs.
+func findImagesInFiles(root string, detectors []Detector, excludePatterns []string) ([]string, error) {
+	images := set.NewSet[string]()
+
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			logger.Errorw("Error walking directory", "path", path, "error", err)
-			return err
+			return fmt.Errorf("error accessing path %q: %w", path, err)
 		}
 
-		// Skip directories
 		if d.IsDir() {
-			return nil
+			return nil // Skip directories
 		}
 
-		// Check if the file matches any exclude patterns
-		for _, pattern := range excludes {
-			logger.Debugw("Checking exclude pattern", "pattern", pattern, "file", path)
-
+		// Check if the file matches any exclude pattern
+		for _, pattern := range excludePatterns {
 			matched, err := doublestar.Match(pattern, path)
 			if err != nil {
-				logger.Errorw("Error matching exclude pattern", "pattern", pattern, "file", path, "error", err)
-				continue
+				return fmt.Errorf("error matching exclude pattern %q against path %q: %w",
+					pattern, path, err)
 			}
-
 			if matched {
-				logger.Debugw("Skipping excluded file", "pattern", pattern, "file", path)
-				return nil
+				return nil // Skip excluded files
 			}
 		}
 
-		logger.Debugw("Processing file", "file", path)
-
-		for _, detector := range availableDetectors {
+		// Check if the detector supports the file
+		for _, detector := range detectors {
 			if detector.IsSupported(path) {
-				logger.Debugw("Detector found supported file", "detector", detector, "file", path)
 				file, err := os.Open(path)
 				if err != nil {
-					logger.Errorw("Error opening file", "file", path, "error", err)
-					continue
+					return fmt.Errorf("error opening file %q: %w", path, err)
 				}
 				defer file.Close()
 
 				detectedImages, err := detector.Detect(file)
 				if err != nil {
-					logger.Errorw("Error detecting images", "detector", detector, "file", path, "error", err)
-					continue
+					return fmt.Errorf("error detecting images in file %q: %w", path, err)
 				}
 
-				images = append(images, detectedImages...)
-
-				logger.Debugw("Detected images", "detector", detector, "file", path, "images", detectedImages)
-
-				break
+				for _, image := range detectedImages {
+					images.Add(image)
+				}
+				return nil // Stop after the first matching detector
 			}
 		}
 
 		return nil
 	})
 
-	logger.Infow("Image detection completed", "imagesFound", len(images))
+	if err != nil {
+		return []string{}, fmt.Errorf("error walking directory: %w", err)
+	}
 
-	return nil
+	return images.ToSlice(), nil
 }
 
 func createLogger() *zap.Logger {
