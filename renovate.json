@@ -19,32 +19,44 @@
   "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false,
       "semanticCommitType": "fix"
     },
     {
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "matchPackageNames": ["*"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "matchPackageNames": [
+        "*"
+      ],
       "automerge": true,
       "semanticCommitType": "chore",
       "groupName": "Non-major updates",
       "groupSlug": "non-major-updates"
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "automerge": true,
       "semanticCommitType": "chore"
     }
   ],
   "customManagers": [
     {
-        "customType": "regex",
-        "fileMatch": ["^action.yml$"],
-        "matchStrings": [
-            "image:\\sdocker:\/\/(?<depName>([a-z0-9]+(?:[.-][a-z0-9]+)*\/)*(?:[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?\/(?:[a-z0-9-]+)\/(?:[a-z0-9-]+))(?::)(?<currentValue>[a-z0-9.-]+)"
-        ],
-        "datasourceTemplate": "docker"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^action.yml$/"
+      ],
+      "matchStrings": [
+        "image:\\sdocker://(?<depName>([a-z0-9]+(?:[.-][a-z0-9]+)*/)*(?:[a-z0-9]+(?:[.-][a-z0-9]+)*)(?::[a-z0-9.-]+)?/(?:[a-z0-9-]+)/(?:[a-z0-9-]+))(?::)(?<currentValue>[a-z0-9.-]+)"
+      ],
+      "datasourceTemplate": "docker"
     }
   ]
 }
