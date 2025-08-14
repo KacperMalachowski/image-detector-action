@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"io"
 	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/KacperMalachowski/image-detector-action/pkg/strategy"
 	"github.com/bmatcuk/doublestar/v4"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -21,7 +23,7 @@ type Logger interface {
 
 // Detector is responsible for detecting image URLs in files.
 type Detector interface {
-	Detect(file string) ([]string, error)
+	Detect(file io.Reader) ([]string, error)
 	IsSupported(file string) bool
 }
 
@@ -76,7 +78,9 @@ func run(cmd *cobra.Command, args []string) error {
 
 	logger.Info("Starting image detector...")
 
-	availableDetectors := []Detector{}
+	availableDetectors := []Detector{
+		&strategy.Generic{}, // Add your detectors here
+	}
 
 	logger.Debugw("Available detectors", "count", len(availableDetectors))
 
@@ -122,7 +126,14 @@ func run(cmd *cobra.Command, args []string) error {
 		for _, detector := range availableDetectors {
 			if detector.IsSupported(path) {
 				logger.Debugw("Detector found supported file", "detector", detector, "file", path)
-				detectedImages, err := detector.Detect(path)
+				file, err := os.Open(path)
+				if err != nil {
+					logger.Errorw("Error opening file", "file", path, "error", err)
+					continue
+				}
+				defer file.Close()
+
+				detectedImages, err := detector.Detect(file)
 				if err != nil {
 					logger.Errorw("Error detecting images", "detector", detector, "file", path, "error", err)
 					continue
