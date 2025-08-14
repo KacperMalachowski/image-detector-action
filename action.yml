@@ -1,7 +1,6 @@
-name: image-detector
+name: docker-image-detector
 description: |
   Find docker image urls in a files over the git repository and produce a list of then.
-  Such list can be used to scan images for vulnerabilities or to check if they are up to date.
 inputs:
   directory:
     description: |
