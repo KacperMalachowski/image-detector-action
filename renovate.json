@@ -40,7 +40,7 @@
   "customManagers": [
     {
         "customType": "regex",
-        "fileMatch": ["^action.yaml$"],
+        "fileMatch": ["^action.yml$"],
         "matchStrings": [
             "image:\\s*['\"]?docker://(?<depName>ghcr\\.io/kacpermalachowski/image-detector)(?::(?<currentValue>[\\w.-]+))?['\"]?"
         ],
