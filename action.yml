@@ -1,0 +1,22 @@
+name: image-detector
+description: |
+  Find docker image urls in a files over the git repository and produce a list of then.
+  Such list can be used to scan images for vulnerabilities or to check if they are up to date.
+inputs:
+  directory:
+    description: |
+      Directory to search for docker image urls.
+      Default is the current directory.
+    required: false
+    default: '.'
+outputs:
+  image_urls:
+    description: |
+      List of docker image urls found in the files.
+      The format is a JSON array of strings.
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/kacpermalachowski/image-detector:sha-f6f8ca2'
+  args:
+    - -d ${{ inputs.directory }}
