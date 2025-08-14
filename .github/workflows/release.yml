@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - run: |
           TAG="v$(date +'%d%m%Y')-$(echo ${{ github.sha }} | cut -c1-8)"
