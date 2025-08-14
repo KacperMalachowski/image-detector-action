@@ -25,6 +25,7 @@
     },
     {
       "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchPackageNames": ["*"],
       "automerge": true,
       "semanticCommitType": "chore",
       "groupName": "Non-major updates",
