@@ -60,15 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run image-detector-action
+        id: images
         uses: KacperMalachowski/image-detector-action@v1
         with:
-          path: .
-          output: report.txt
-      - name: Upload report
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-images-report
-          path: report.txt
+          directory: "images"
+      - run: echo ${{ steps.images.outputs.image_urls
 ```
 
 ### As a CLI Tool
@@ -93,12 +89,11 @@ go build -o image-detector ./cmd/image-detector
 
 | Name     | Description                       | Required | Default |
 |----------|-----------------------------------|:--------:|:-------:|
-| path     | Path to scan for images           |   No     |   `.`   |
-| output   | Output file for results           |   No     |  `-`    |
+| directory| Path to scan for images           |   No     |   `.`   |
 
 ## Outputs
 
-- `report.txt` — List of detected Docker image URLs.
+- `image_urlst` — List of detected Docker image URLs.
 
 ---
 
@@ -122,23 +117,3 @@ See [`.github/workflows/image-detector.yml`](.github/workflows/image-detector.ym
    ```sh
    golangci-lint run
    ```
-
----
-
-## Contributing
-
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## References
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Go Documentation](https://golang.org/doc/)
-- [Docker Documentation](https://docs.docker.com/)
