@@ -36,5 +36,15 @@
       "automerge": true,
       "semanticCommitType": "chore"
     }
+  ],
+  "customManagers": [
+    {
+        "customType": "regex",
+        "fileMatch": ["^action.yaml$"],
+        "matchStrings": [
+            "image:\\s*['\"]?docker://(?<depName>ghcr\\.io/kacpermalachowski/image-detector)(?::(?<currentValue>[\\w.-]+))?['\"]?"
+        ],
+        "datasourceTemplate": "docker"
+    }
   ]
 }
