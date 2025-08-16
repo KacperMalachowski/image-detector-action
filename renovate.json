@@ -54,10 +54,10 @@
         "/^action.ya?ml$/"
       ],
       "matchStrings": [
-        "image:\\s*docker://(?<depName>[^:]+):(?<currentValue>.+)"
+        "image:\\s+docker:\/\/(?<depName>.+):(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "docker",
-      "autoReplaceStringTemplate": "image: docker://{{{depName}}}:{{{newValue}}}@{{{newDigest}}"
+      "autoReplaceStringTemplate": "image: docker://{{{depName}}}:{{{newValue}}}"
     }
   ]
 }
