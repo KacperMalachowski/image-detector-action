@@ -56,7 +56,8 @@
       "matchStrings": [
         "image:\\s*docker://(?<depName>[^:]+):(?<currentValue>.+)"
       ],
-      "datasourceTemplate": "docker"
+      "datasourceTemplate": "docker",
+      "autoReplaceStringTemplate": "image:\\sdocker://{{{depName}}}:{{{newValue}}}"
     }
   ]
 }
