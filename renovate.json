@@ -58,7 +58,6 @@
       ],
       "datasourceTemplate": "docker",
       "autoReplaceStringTemplate": "image: docker://{{{depName}}}:{{{newValue}}}",
-      "versioning": "loose"
     }
   ]
 }
