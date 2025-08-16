@@ -57,7 +57,7 @@
         "image:\\s*docker://(?<depName>[^:]+):(?<currentValue>.+)"
       ],
       "datasourceTemplate": "docker",
-      "autoReplaceStringTemplate": "image:\\sdocker://{{{depName}}}:{{{newValue}}}"
+      "autoReplaceStringTemplate": "image: docker://{{{depName}}}:{{{newValue}}}@{{{newDigest}}"
     }
   ]
 }
