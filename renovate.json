@@ -54,7 +54,7 @@
         "/^action.ya?ml$/"
       ],
       "matchStrings": [
-        "image:\\s+docker:\/\/ghcr.io\/(?<depName>.+):(?<currentValue>[^\\s]+)"
+        "image:\\s+docker:\/\/(?<depName>.+):(?<currentValue>[^\\s]+)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
