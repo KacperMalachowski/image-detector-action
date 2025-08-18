@@ -45,6 +45,11 @@
       ],
       "automerge": true,
       "semanticCommitType": "chore"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/kacpermalachowski/image-detector"],
+      "versioning": "loose"
     }
   ],
   "customManagers": [
