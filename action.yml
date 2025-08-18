@@ -16,6 +16,6 @@ outputs:
 
 runs:
   using: 'docker'
-  image: docker://ghcr.io/kacpermalachowski/image-detector:v20250814-40aea7a
+  image: docker://ghcr.io/kacpermalachowski/image-detector:v20250814-b18cbaf
   args:
     - -d ${{ inputs.directory }}
