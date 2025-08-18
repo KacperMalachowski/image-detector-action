@@ -22,7 +22,6 @@
       "matchUpdateTypes": [
         "major"
       ],
-      "automerge": false,
       "semanticCommitType": "fix"
     },
     {
