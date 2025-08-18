@@ -56,8 +56,9 @@
       "matchStrings": [
         "image:\\s+docker:\/\/(?<depName>.+):(?<currentValue>[^\\s]+)"
       ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
+      "depNameTemplate": "{{depName}}",
+      "currentValueTemplate": "{{currentValue}}",
+      "datasourceTemplate": "docker"
     }
   ]
 }
