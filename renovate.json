@@ -54,7 +54,7 @@
         "/^action.ya?ml$/"
       ],
       "matchStrings": [
-        "image:\\s+docker:\/\/(?<depName>.+):(?<currentValue>[^\\s]+)"
+        "image:\\s*docker:\/\/(?<depName>[^:]+):(?<currentValue>[^\\s]+)"
       ],
       "depNameTemplate": "{{depName}}",
       "currentValueTemplate": "{{currentValue}}",
