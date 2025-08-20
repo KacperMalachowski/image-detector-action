@@ -159,7 +159,7 @@ func TestFindImagesInFiles(t *testing.T) {
 	}
 }
 
-// getImagesOutputFromPath reads the GITHUB_OUTPUT file and parses the "images" key
+// getImagesOutput reads the GITHUB_OUTPUT file and parses the "images" key
 func getImagesOutput(t *testing.T, file io.Reader) []string {
 	t.Helper()
 
