@@ -76,14 +76,14 @@ func TestSetOutput(t *testing.T) {
 func TestFindImagesInFiles(t *testing.T) {
 	tc := []struct {
 		name                 string
-		exludes              []string
+		excludes              []string
 		supportedPattern     string
 		images               []string
 		prepareDirectoryTree func(path string)
 	}{
 		{
 			name:             "No files",
-			exludes:          []string{},
+			excludes:          []string{},
 			supportedPattern: "**/*.txt",
 			images:           []string{},
 			prepareDirectoryTree: func(path string) {
@@ -92,7 +92,7 @@ func TestFindImagesInFiles(t *testing.T) {
 		},
 		{
 			name:             "All files included",
-			exludes:          []string{},
+			excludes:          []string{},
 			supportedPattern: "**/*.tf",
 			images:           []string{"test/image1:1234", "test/image2:5678"},
 			prepareDirectoryTree: func(path string) {
@@ -105,7 +105,7 @@ func TestFindImagesInFiles(t *testing.T) {
 		},
 		{
 			name:             "Excluded files",
-			exludes:          []string{"**/excluded.txt"},
+			excludes:          []string{"**/excluded.txt"},
 			supportedPattern: "**/*.txt",
 			images:           []string{"test/image1:1234"},
 			prepareDirectoryTree: func(path string) {
@@ -129,11 +129,11 @@ func TestFindImagesInFiles(t *testing.T) {
 
 			test.prepareDirectoryTree(tempDir)
 
-			images, err := findImagesInFiles(tempDir, detectors, test.exludes)
+			images, err := findImagesInFiles(tempDir, detectors, test.excludes)
 			assert.NoError(t, err, "Failed to find images in files")
 
 			// Check if the excluded files were not processed
-			for _, excluded := range test.exludes {
+			for _, excluded := range test.excludes {
 				for _, visited := range mockedDetector.visitedFiles {
 					assert.NotContains(t, visited, excluded, "Excluded file was processed: %s", excluded)
 				}
@@ -159,7 +159,7 @@ func TestFindImagesInFiles(t *testing.T) {
 	}
 }
 
-// getImagesOutputFromPath reads the GITHUB_OUTPUT file and perses the "images" key
+// getImagesOutputFromPath reads the GITHUB_OUTPUT file and parses the "images" key
 func getImagesOutput(t *testing.T, file io.Reader) []string {
 	t.Helper()
 
