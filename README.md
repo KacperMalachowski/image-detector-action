@@ -64,7 +64,7 @@ jobs:
         uses: KacperMalachowski/image-detector-action@v1
         with:
           directory: "images"
-      - run: echo ${{ steps.images.outputs.image_urls
+      - run: echo ${{ steps.images.outputs.image_urls }}
 ```
 
 ### As a CLI Tool
@@ -117,3 +117,44 @@ See [`.github/workflows/image-detector.yml`](.github/workflows/image-detector.ym
    ```sh
    golangci-lint run
    ```
+
+---
+
+## Releases
+
+This project uses [Semantic Versioning](https://semver.org/) and automated releases based on [Conventional Commits](https://conventionalcommits.org/).
+
+### Using Specific Versions
+
+When using this action, you can specify exact versions:
+
+```yaml
+# Use a specific version
+- uses: KacperMalachowski/image-detector-action@v1.0.0
+
+# Use the latest v1.x.x version (recommended)
+- uses: KacperMalachowski/image-detector-action@v1
+
+# Use the latest version (less stable)
+- uses: KacperMalachowski/image-detector-action@main
+```
+
+### Triggering Releases
+
+Releases are automatically created when commits are pushed to the `main` branch using conventional commit format:
+
+- `feat: add new feature` → Minor version bump (v1.1.0)
+- `fix: resolve bug` → Patch version bump (v1.0.1)  
+- `feat!: breaking change` → Major version bump (v2.0.0)
+- `BREAKING CHANGE:` in commit body → Major version bump
+
+### Release Process
+
+1. Commits are analyzed for conventional commit patterns
+2. Version is automatically determined based on commit types
+3. Release notes are generated from commit messages
+4. GitHub release is created with changelog
+5. Major version tags (v1, v2, etc.) are updated automatically
+6. Docker images are built and tagged with new version
+
+---

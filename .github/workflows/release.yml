@@ -1,15 +1,21 @@
-name: release
+# This workflow has been replaced by semantic-release.yml
+# The old date-based tagging approach has been migrated to SemVer
+# Please use conventional commits for automated releases:
+# - feat: for new features (minor version bump)
+# - fix: for bug fixes (patch version bump)  
+# - BREAKING CHANGE: for breaking changes (major version bump)
+# 
+# This file is kept for reference but the workflow is disabled
+name: legacy-release
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'action.yml'
+  workflow_dispatch:
+    # Only manual trigger for emergency use
 
 jobs:
-  release:
+  legacy-release:
     runs-on: ubuntu-latest
+    if: false  # Disabled - use semantic-release.yml instead
     permissions:
       contents: write
     steps:

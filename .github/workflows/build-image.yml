@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
     paths:
       - 'Dockerfile'
       - 'build-image.yml'
@@ -48,8 +50,13 @@ jobs:
           images: |
             ghcr.io/kacpermalachowski/image-detector
           tags: |
-            type=raw,v{{date 'YYYYMMDD'}}-{{sha}}
-            type=raw,${{ github.sha }}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -60,7 +67,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
       - uses: aquasecurity/trivy-action@0.32.0
         with:
-          image-ref: ghcr.io/kacpermalachowski/image-detector:${{ github.sha }}
+          image-ref: ghcr.io/kacpermalachowski/image-detector:main-${{ github.sha }}
           format: ${{ github.event_name == 'pull_request' && 'table' || 'sarif' }}
           exit-code: ${{ github.event_name == 'pull_request' && '1' || '0' }}
           severity: CRITICAL,HIGH
