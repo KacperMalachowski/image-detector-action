@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - run: |
-          TAG="v$(date +'%d%m%Y')-$(echo ${{ github.sha }} | cut -c1-8)"
+          TAG="v$(date +'%Y%m%d')-$(echo ${{ github.sha }} | cut -c1-8)"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
         id: set-tag
 
