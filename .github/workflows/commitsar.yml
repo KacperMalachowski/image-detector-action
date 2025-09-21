@@ -1,0 +1,21 @@
+name: commitsar
+
+on:
+  pull_request:
+    type:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Commitsar Check
+        uses: aevea/commitsar@v0.11.0

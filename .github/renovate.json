@@ -50,19 +50,5 @@
       "matchPackageNames": ["ghcr.io/kacpermalachowski/image-detector"],
       "versioning": "loose"
     }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^action.ya?ml$/"
-      ],
-      "matchStrings": [
-        "image:\\s*docker:\/\/(?<depName>[^:]+):(?<currentValue>[^\\s]+)"
-      ],
-      "depNameTemplate": "{{depName}}",
-      "currentValueTemplate": "{{currentValue}}",
-      "datasourceTemplate": "docker"
-    }
   ]
 }
