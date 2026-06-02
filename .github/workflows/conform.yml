@@ -1,0 +1,29 @@
+name: conform
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26'
+
+      - name: Install conform
+        run: go install github.com/siderolabs/conform/cmd/conform@latest
+
+      - name: Enforce commit policy
+        run: conform enforce --base-branch origin/${{ github.base_ref }}
