@@ -1,21 +1,31 @@
 name: docker-image-detector
 description: |
-  Find docker image urls in a files over the git repository and produce a list of then.
+  Find docker image URLs in files across a git repository and produce a list of them.
 inputs:
   directory:
     description: |
-      Directory to search for docker image urls.
-      Default is the current directory.
+      Directory to search for docker image URLs.
+      Defaults to the current directory.
     required: false
     default: '.'
-outputs:
-  image_urls:
+  exclude:
     description: |
-      List of docker image urls found in the files.
+      Comma-separated list of glob patterns to exclude from detection.
+      Defaults mirror the CLI's built-in exclusions; override only if you
+      know what you are doing — an empty string disables the defaults.
+    required: false
+    default: '**.git**,**.git/**,**node_modules**,**vendor**'
+outputs:
+  images:
+    description: |
+      List of docker image URLs found in the scanned files.
       The format is a JSON array of strings.
 
 runs:
   using: 'docker'
   image: docker://ghcr.io/kacpermalachowski/image-detector:v20250909-e91e7a3
   args:
-    - -d ${{ inputs.directory }}
+    - --check-directory
+    - ${{ inputs.directory }}
+    - --exclude
+    - ${{ inputs.exclude }}

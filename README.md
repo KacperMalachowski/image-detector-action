@@ -64,7 +64,7 @@ jobs:
         uses: KacperMalachowski/image-detector-action@v1
         with:
           directory: "images"
-      - run: echo ${{ steps.images.outputs.image_urls
+      - run: echo "${{ steps.images.outputs.images }}"
 ```
 
 ### As a CLI Tool
@@ -80,20 +80,21 @@ go build -o image-detector ./cmd/image-detector
 #### Run
 
 ```sh
-./image-detector --path . --output report.txt
+./image-detector -d .
 ```
 
 ---
 
 ## Inputs
 
-| Name     | Description                       | Required | Default |
-|----------|-----------------------------------|:--------:|:-------:|
-| directory| Path to scan for images           |   No     |   `.`   |
+| Name      | Description                                                                                       | Required | Default                                              |
+|-----------|---------------------------------------------------------------------------------------------------|:--------:|:----------------------------------------------------:|
+| directory | Path to scan for images                                                                           |   No     | `.`                                                  |
+| exclude   | Comma-separated glob patterns to exclude. An empty string disables the defaults.                  |   No     | `**.git**,**.git/**,**node_modules**,**vendor**`     |
 
 ## Outputs
 
-- `image_urlst` — List of detected Docker image URLs.
+- `images` — JSON array of detected Docker image URLs.
 
 ---
 
