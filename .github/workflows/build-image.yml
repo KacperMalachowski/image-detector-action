@@ -62,7 +62,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - uses: aquasecurity/trivy-action@0.33.1
+      - uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ghcr.io/kacpermalachowski/image-detector:${{ github.sha }}
           format: ${{ github.event_name == 'pull_request' && 'table' || 'sarif' }}
