@@ -1,0 +1,8 @@
+# Install with `brew install lefthook` (or download binary) then `lefthook install`
+# Docs on passing the commit message file into commit-msg via {1}: https://lefthook.dev/configuration/run.html
+
+commit-msg:
+  parallel: false
+  commands:
+    conventional:
+      run: bash scripts/verify-commit-msg.sh {1}

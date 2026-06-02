@@ -1,0 +1,54 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":automergeDigest",
+    ":automergeMinor"
+  ],
+  "timezone": "Europe/Warsaw",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "auto",
+  "platformAutomerge": true,
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "matchPackageNames": [
+        "*"
+      ],
+      "automerge": true,
+      "semanticCommitType": "chore",
+      "groupName": "Non-major updates",
+      "groupSlug": "non-major-updates"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "automerge": true,
+      "semanticCommitType": "chore"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/kacpermalachowski/image-detector"],
+      "versioning": "loose"
+    }
+  ]
+}
